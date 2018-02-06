@@ -1,8 +1,8 @@
 #!/bin/bash
 i=0
-n_iterations=20
+n_iterations=50
 input=input.txt
-python_ver=python2.7 # Change this to however you invoke python
+python_ver=python # Change this to however you invoke python
 
 while [ $i -lt $n_iterations ]
 do
@@ -10,12 +10,12 @@ do
     sort |
     $python_ver pagerank_reduce.py |
     $python_ver process_map.py |
-    sort > input_to_process_reduce.txt
-    $python_ver process_reduce.py < input_to_process_reduce.txt > output.txt
+    sort |
+    $python_ver process_reduce.py > output.txt
 
     read -r line < output.txt # reads first line of output.txt
     first_nine=${line:0:9}    # FinalRank is 9 characters
-    echo "$first_nine"        # Prints first_nine
+    echo "$i"        # Prints first_nine
 
     if [ "$first_nine" = "FinalRank" ] # Converged
     then
