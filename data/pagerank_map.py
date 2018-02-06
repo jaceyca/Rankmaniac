@@ -40,7 +40,7 @@ def parseData():
             sys.stdout.write("%s \t %f \n" % (neighbor, curr))
         else:
             for neighbor in outlinks:
-                sys.stdout.write("%s \t %f \n" % (neighbor, curr/lengthOutlinks))
+                sys.stdout.write("%s \t %f \n" % (neighbor, curr / lengthOutlinks))
         # sys.stdout.write("nodeId: %s, iteration: %i, curr: %f, prev: %f, outlinks: %s \n" % (nodeId, iteration, curr, prev, outlinksString))
         
 parseData()
