@@ -28,18 +28,20 @@ def parseData():
             
         outlinksString = ",".join(outlinks)
 
-        # For each line, we need to pass on the information of previous, the current iteration,
-        # and neighbors
-        sys.stdout.write("NodeID:%s\t%i,%f,%s\n" % (nodeId, iteration, curr, outlinksString))
 
         # Other output is simply (node, amountOfRankToAddToNode)
 
         lengthOutlinks = len(outlinks)
         # If there are no outlinks 
         if lengthOutlinks == 0:
+            sys.stdout.write("NodeId:%s\t%i,%f\n" % (nodeId, iteration, curr))
             sys.stdout.write("%s\t%f\n" % (nodeId, curr))
         else:
             for neighbor in outlinks:
+                # For each line, we need to pass on the information of previous, the current iteration,
+                # and neighbors
+                sys.stdout.write("NodeID:%s\t%i,%f,%s\n" % (nodeId, iteration, curr, outlinksString))
+
                 sys.stdout.write("%s\t%f\n" % (neighbor, curr/lengthOutlinks))
         # sys.stdout.write("nodeId: %s, iteration: %i, curr: %f, prev: %f, outlinks: %s \n" % (nodeId, iteration, curr, prev, outlinksString))
         

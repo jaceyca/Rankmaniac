@@ -28,15 +28,17 @@ def parseData():
         nodeId = splitLine[0]
         degreeChange = float(splitLine[1])
         # If this is the first line
-        if prevId == None:
+        if prevId is None:
             prevId = nodeId
             totalDegreeChange += degreeChange
         elif prevId == nodeId:
             totalDegreeChange += degreeChange
         else: # we have a new ID
             newDegree = alpha * totalDegreeChange + (1-alpha)   
-            sys.stdout.write("%s\t%f\n" % (nodeId, newDegree))
+            sys.stdout.write("%s\t%f\n" % (prevId, newDegree))
             totalDegreeChange = degreeChange
             prevId = nodeId
+    newDegree = alpha * totalDegreeChange + (1-alpha)   
+    sys.stdout.write("%s\t%f\n" % (prevId, newDegree))
                                        
 parseData()

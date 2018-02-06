@@ -3,7 +3,7 @@
 import sys
 import heapq
 
-SIZE_OF_QUEUE = 20
+SIZE_OF_QUEUE = 30
 #
 # This program simply represents the identity function.
 #
@@ -60,15 +60,17 @@ def parseData():
 
     if isConverged:
         for i in range(SIZE_OF_QUEUE - 1, -1, -1):
-            print(i, "!!!!\n\n")
-            sys.stdout.write("FinalRank:%f\t%s" % (topKRanks[i][0], topKRanks[i][1]))
+            sys.stdout.write("FinalRank:%f\t%s\n" % (topKRanks[i][0], topKRanks[i][1]))
     else: 
         for nodeId in nodeStrings:
+            new_rank = -1
             outlinksString = ",".join(nodeStrings[nodeId][3:])
-            if nodeId not in newTopKNodes:
-                sys.stdout.write("NodeID:%s\t%i,%s,%s\n" % (nodeStrings[nodeId][0], -1, nodeStrings[nodeId][2], outlinksString))
+            outlinksLength = len(outlinksString)
+            if nodeId in newTopKNodes:
+                new_rank = nodeStrings[nodeId][1]
+            if outlinksLength == 0:
+                sys.stdout.write("NodeId:%s\t%i,%s\n" % (nodeStrings[nodeId][0], new_rank, nodeStrings[nodeId][2]))
             else:
-                sys.stdout.write("NodeID:%s\t%i,%s,%s\n" % (nodeStrings[nodeId][0], nodeStrings[nodeId][1], \
-                    nodeStrings[nodeId][2], outlinksString))
-        
+                sys.stdout.write("NodeId:%s\t%i,%s,%s\n" % (nodeStrings[nodeId][0], new_rank, nodeStrings[nodeId][2], outlinksString))
+                
 parseData()
