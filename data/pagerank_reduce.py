@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import sys
-import numpy as np
 
 #
 # This program simply represents the identity function.
@@ -9,32 +8,37 @@ import numpy as np
 
 # we want to calculate the new ranks
 
+
 alpha = 0.85
 
 def parseData():
     prevId = None
-    values = []
+    totalDegreeChange = 0
     for line in sys.stdin:
-        splitLine = line.split(",")
+        # If the line starts with N as in NodeID:..., then we know it's passthrough information
+        # and therefore just pass it on
+        if line[0] == 'N':
+            sys.stdout.write(line)
+            continue
+
+        # Now, if it's data of the form (node, amountOfRankToAddToNode)
+        assert(len(splitLine) == 2)
+        splitLine = line.split("\t")
         nodeId = splitLine[0]
-        value = float(splitLine[1])
-        
+        degreeChange = float(splitLine[1])
         if prevId == None:
             prevId = nodeId
-            values.append(value)
-        elif nodeId == prevId:
-            values.append(value)
-        else:
-            calculateSum(prevId, values)
+            totalDegreeChange += degreeChange
+        elif prevId == nodeId:
+            totalDegreeChange += degreeChange
+        else: # we have a new ID
+            # This might have to be (1-alpha)/ |N| in which case we need to keep track
+            # of total number of nodes as passthrough information
+            newDegree = alpha * totalDegreeChange + (1-alpha)   
+            sys.stdout.write("%s, %f \n" % (nodeId, newDegree))
+            totalDegreeChange = degreeChange
             prevId = nodeId
-            values = [value]
-                                
-def calculateSum(nodeId, values):
-    values_sum = np.sum(values)
-    curr = alpha * values_sum + (1-alpha)
-    sys.stdout.write("%s, %f \n" % (nodeId, curr))
-
-                  
+                                       
 parseData()
                   
                   
