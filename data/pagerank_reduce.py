@@ -22,30 +22,20 @@ def parseData():
             continue
 
         # Now, if it's data of the form (node, amountOfRankToAddToNode)
-        assert(len(splitLine) == 2)
         splitLine = line.split("\t")
+        assert(len(splitLine) == 2)
         nodeId = splitLine[0]
         degreeChange = float(splitLine[1])
+        # If this is the first line
         if prevId == None:
             prevId = nodeId
             totalDegreeChange += degreeChange
         elif prevId == nodeId:
             totalDegreeChange += degreeChange
         else: # we have a new ID
-            # This might have to be (1-alpha)/ |N| in which case we need to keep track
-            # of total number of nodes as passthrough information
             newDegree = alpha * totalDegreeChange + (1-alpha)   
-            sys.stdout.write("%s, %f \n" % (nodeId, newDegree))
+            sys.stdout.write("%s\t%f\n" % (nodeId, newDegree))
             totalDegreeChange = degreeChange
             prevId = nodeId
                                        
 parseData()
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
