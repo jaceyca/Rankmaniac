@@ -34,11 +34,13 @@ def parseData():
         sys.stdout.write("NodeID:%s \t %f, %i, %s\n" % (nodeId, curr, iteration, outlinks))
 
         # Other output is simply (node, amountOfRankToAddToNode)
-        if len(outlinks) == 0:
+
+        lengthOutlinks = len(outlinks)
+        if lengthOutlinks == 0:
             sys.stdout.write("%s \t %f \n" % (neighbor, curr))
         else:
             for neighbor in outlinks:
-                sys.stdout.write("%s \t %f \n" % (neighbor, curr/len(outlinks)))
+                sys.stdout.write("%s \t %f \n" % (neighbor, curr/lengthOutlinks))
         # sys.stdout.write("nodeId: %s, iteration: %i, curr: %f, prev: %f, outlinks: %s \n" % (nodeId, iteration, curr, prev, outlinksString))
         
 parseData()
