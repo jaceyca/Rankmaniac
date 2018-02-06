@@ -17,7 +17,7 @@ def parseData():
         data = splitLine[1].strip().split(",")
         # If this is a float
         if '.' in data[0]:
-            iteration = 0
+            iteration = -1
             curr = float(data[0])
             outlinks = data[2:]
         # If this is a non-float iteration value

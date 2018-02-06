@@ -18,6 +18,7 @@ def parseData():
         # If the line starts with N as in NodeID:..., then we know it's passthrough information
         # and therefore just pass it on
         if line[0] == 'N':
+            line = line[7:]
             sys.stdout.write(line)
             continue
 
