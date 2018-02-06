@@ -10,37 +10,37 @@ import sys
     
 def parseData():
     # First line input: (id \t current, previous, neighbors)
-    # Every other line: (id \t current, previous, iteration, neighbors)
+    # Every other line: (id \t iteration, current, previous, neighbors)
     for line in sys.stdin:
         splitLine = line.split("\t")
         nodeId = splitLine[0].split(":")[1]
         data = splitLine[1].strip().split(",")
-        # TODO: figure out how to not hardcode this
-        if data[0] == "1.0":
+        # If this is a float
+        if '.' in data[0]:
             iteration = 0
             curr = float(data[0])
-            prev = float(data[1])
             outlinks = data[2:]
+        # If this is a non-float iteration value
         else:
-            curr = float(data[0])
-            prev = float(data[1])
-            iteration = int(data[2])
-            outlinks = data[3:]
+            iteration = int(data[0])
+            curr = float(data[1])
+            outlinks = data[2:]
             
         outlinksString = ",".join(outlinks)
 
         # For each line, we need to pass on the information of previous, the current iteration,
         # and neighbors
-        sys.stdout.write("NodeID:%s \t %f, %i, %s\n" % (nodeId, curr, iteration, outlinks))
+        sys.stdout.write("NodeID:%s\t%i,%f,%s\n" % (nodeId, iteration, curr, outlinksString))
 
         # Other output is simply (node, amountOfRankToAddToNode)
 
         lengthOutlinks = len(outlinks)
+        # If there are no outlinks 
         if lengthOutlinks == 0:
-            sys.stdout.write("%s \t %f \n" % (neighbor, curr))
+            sys.stdout.write("%s\t%f\n" % (nodeId, curr))
         else:
             for neighbor in outlinks:
-                sys.stdout.write("%s \t %f \n" % (neighbor, curr / lengthOutlinks))
+                sys.stdout.write("%s\t%f\n" % (neighbor, curr/lengthOutlinks))
         # sys.stdout.write("nodeId: %s, iteration: %i, curr: %f, prev: %f, outlinks: %s \n" % (nodeId, iteration, curr, prev, outlinksString))
         
 parseData()
