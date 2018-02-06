@@ -19,20 +19,18 @@ def parseData():
         if '.' in data[0]:
             iteration = 0
             curr = float(data[0])
-            prev = float(data[1])
             outlinks = data[2:]
         # If this is a non-float iteration value
         else:
             iteration = int(data[0])
             curr = float(data[1])
-            prev = float(data[2])
-            outlinks = data[3:]
+            outlinks = data[2:]
             
         outlinksString = ",".join(outlinks)
 
         # For each line, we need to pass on the information of previous, the current iteration,
         # and neighbors
-        sys.stdout.write("NodeID:%s \t %i, %f, %f, %s\n" % (nodeId, iteration, prev, curr, outlinksString))
+        sys.stdout.write("NodeID:%s\t%i,%f,%s\n" % (nodeId, iteration, curr, outlinksString))
 
         # Other output is simply (node, amountOfRankToAddToNode)
 
