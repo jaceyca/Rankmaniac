@@ -24,7 +24,6 @@ def parseData():
 
         # Now, if it's data of the form (node, amountOfRankToAddToNode)
         splitLine = line.split("\t")
-        assert(len(splitLine) == 2)
         nodeId = splitLine[0]
         degreeChange = float(splitLine[1])
         # If this is the first line

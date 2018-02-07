@@ -11,6 +11,8 @@ def parseData():
     # New Rank line: (id \t newRank)
     # Paassthrough line: (id \t iteration, current, neighbors)
 
+    sumOfDiffs = 0
+    numNodes = 0
     prevNode = None
     nodeStrings = {}
     isConverged = True
@@ -33,44 +35,59 @@ def parseData():
             # From data = [iteration, current, neighbors]
             iteration = int(data[0])
             neighbors = data[2:]
+            prevRank = float(data[1])
         if nodeId == prevNode:
-            nodeStrings[nodeId] = [nodeId, iteration, curRank] + neighbors
+
+            #sumOfDiffs += (abs(curRank - prevRank))
+            nodeStrings[nodeId] = [iteration, curRank, prevRank] + neighbors
+            #numNodes += 1
         else:
             prevNode = nodeId
 
         # For each line, we need to pass on the information of previous, the current iteration,
         # and neighbors
 
+    # avgDiff = sumOfDiffs / numNodes
+
     currentRanking = SIZE_OF_QUEUE
     topKRanks = []
     newTopKNodes = set()
 
     while priorityQueue:
-        rank, nodeId = heapq.heappop(priorityQueue)
-        previousRanking = nodeStrings[nodeId][1]
-        nodeStrings[nodeId][1] = currentRanking
+        newRank, nodeId = heapq.heappop(priorityQueue)
+        previousRanking = nodeStrings[nodeId][0]
+        nodeStrings[nodeId][0] = currentRanking
+        prevRank = nodeStrings[nodeId][2]
+
+        sumOfDiffs += abs(newRank - prevRank)
 
         newTopKNodes.add(nodeId)
 
-        topKRanks.append((rank, nodeId))
+        topKRanks.append((newRank, nodeId))
 
-        if isConverged and currentRanking != previousRanking:
+        '''if isConverged and currentRanking != previousRanking:
             isConverged = False
+        '''
+        
         currentRanking -= 1
 
+    avgDiff = sumOfDiffs / SIZE_OF_QUEUE
+    isConverged = avgDiff < 0.0005
+
     if isConverged:
-        for i in range(SIZE_OF_QUEUE - 1, -1, -1):
+        for i in range(SIZE_OF_QUEUE - 1, SIZE_OF_QUEUE - 21, -1):
             sys.stdout.write("FinalRank:%f\t%s\n" % (topKRanks[i][0], topKRanks[i][1]))
+        #sys.stdout.write("AvgDiff:%f\n" % avgDiff)
     else: 
         for nodeId in nodeStrings:
             new_rank = -1
             outlinksString = ",".join(nodeStrings[nodeId][3:])
             outlinksLength = len(outlinksString)
             if nodeId in newTopKNodes:
-                new_rank = nodeStrings[nodeId][1]
+                new_rank = nodeStrings[nodeId][0]
             if outlinksLength == 0:
-                sys.stdout.write("NodeId:%s\t%i,%s\n" % (nodeStrings[nodeId][0], new_rank, nodeStrings[nodeId][2]))
+                sys.stdout.write("NodeId:%s\t%i,%s\n" % (nodeId, new_rank, nodeStrings[nodeId][1]))
             else:
-                sys.stdout.write("NodeId:%s\t%i,%s,%s\n" % (nodeStrings[nodeId][0], new_rank, nodeStrings[nodeId][2], outlinksString))
+                sys.stdout.write("NodeId:%s\t%i,%s,%s\n" % (nodeId, new_rank, nodeStrings[nodeId][1], outlinksString))
                 
 parseData()

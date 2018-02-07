@@ -1,8 +1,8 @@
 #!/bin/bash
 i=0
-n_iterations=20
+n_iterations=50
 input=input.txt
-python_ver=python2.7 # Change this to however you invoke python
+python_ver=python # Change this to however you invoke python
 
 while [ $i -lt $n_iterations ]
 do
@@ -20,6 +20,7 @@ do
     if [ "$first_nine" = "FinalRank" ] # Converged
     then
         echo "Converged!"
+        echo $i
         break
     else
         echo "Try again"
