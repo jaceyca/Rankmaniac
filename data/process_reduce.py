@@ -2,6 +2,7 @@
 
 import sys
 import heapq
+import numpy as np
 
 SIZE_OF_QUEUE = 30
 #
@@ -11,7 +12,7 @@ def parseData():
     # New Rank line: (id \t newRank)
     # Paassthrough line: (id \t iteration, current, neighbors)
 
-    sumOfDiffs = 0
+    diffs = []
     numNodes = 0
     prevNode = None
     nodeStrings = {}
@@ -53,13 +54,24 @@ def parseData():
     topKRanks = []
     newTopKNodes = set()
 
+    smallestDiffBetweenTopK = 999999
+    prevNodeRank = -1
+
     while priorityQueue:
         newRank, nodeId = heapq.heappop(priorityQueue)
         previousRanking = nodeStrings[nodeId][0]
         nodeStrings[nodeId][0] = currentRanking
         prevRank = nodeStrings[nodeId][2]
 
-        sumOfDiffs += abs(newRank - prevRank)
+        if prevNodeRank != -1:
+            diff = abs(newRank - prevNodeRank)
+
+            if diff < smallestDiffBetweenTopK:
+                smallestDiffBetweenTopK = diff
+
+        prevNodeRank = newRank
+
+        diffs.append(abs(newRank - prevRank))
 
         newTopKNodes.add(nodeId)
 
@@ -71,13 +83,16 @@ def parseData():
         
         currentRanking -= 1
 
-    avgDiff = sumOfDiffs / SIZE_OF_QUEUE
-    isConverged = avgDiff < 0.0005
+    avgDiff = np.mean(diffs)
+    stdDev = np.std(diffs)
+    isConverged = (avgDiff + stdDev) < smallestDiffBetweenTopK
 
     if isConverged:
-        for i in range(SIZE_OF_QUEUE - 1, SIZE_OF_QUEUE - 21, -1):
+        for i in range(SIZE_OF_QUEUE - 1, -1, -1):
             sys.stdout.write("FinalRank:%f\t%s\n" % (topKRanks[i][0], topKRanks[i][1]))
-        #sys.stdout.write("AvgDiff:%f\n" % avgDiff)
+        sys.stdout.write("AvgDiff:%f\n" % avgDiff)
+        sys.stdout.write("StdDev:%f\n" % stdDev)
+        sys.stdout.write("SmallestDiff:%f\n" % smallestDiffBetweenTopK)
     else: 
         for nodeId in nodeStrings:
             new_rank = -1
