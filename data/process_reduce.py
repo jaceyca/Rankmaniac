@@ -59,8 +59,8 @@ def parseData():
 
     while priorityQueue:
         newRank, nodeId = heapq.heappop(priorityQueue)
-        previousRanking = nodeStrings[nodeId][0]
-        nodeStrings[nodeId][0] = currentRanking
+        #previousRanking = nodeStrings[nodeId][0]
+        #nodeStrings[nodeId][0] = currentRanking
         prevRank = nodeStrings[nodeId][2]
 
         if prevNodeRank != -1:
@@ -73,7 +73,7 @@ def parseData():
 
         diffs.append(abs(newRank - prevRank))
 
-        newTopKNodes.add(nodeId)
+        #newTopKNodes.add(nodeId)
 
         topKRanks.append((newRank, nodeId))
 
@@ -81,25 +81,27 @@ def parseData():
             isConverged = False
         '''
         
-        currentRanking -= 1
+        #currentRanking -= 1
 
     avgDiff = np.mean(diffs)
     stdDev = np.std(diffs)
     isConverged = (avgDiff + stdDev) < smallestDiffBetweenTopK
 
     if isConverged:
-        for i in range(SIZE_OF_QUEUE - 1, -1, -1):
+        for i in range(SIZE_OF_QUEUE - 1, SIZE_OF_QUEUE - 21, -1):
             sys.stdout.write("FinalRank:%f\t%s\n" % (topKRanks[i][0], topKRanks[i][1]))
-        sys.stdout.write("AvgDiff:%f\n" % avgDiff)
-        sys.stdout.write("StdDev:%f\n" % stdDev)
-        sys.stdout.write("SmallestDiff:%f\n" % smallestDiffBetweenTopK)
+        #sys.stdout.write("AvgDiff:%f\n" % avgDiff)
+        #sys.stdout.write("StdDev:%f\n" % stdDev)
+        #sys.stdout.write("SmallestDiff:%f\n" % smallestDiffBetweenTopK)
     else: 
         for nodeId in nodeStrings:
             new_rank = -1
             outlinksString = ",".join(nodeStrings[nodeId][3:])
             outlinksLength = len(outlinksString)
+            '''
             if nodeId in newTopKNodes:
                 new_rank = nodeStrings[nodeId][0]
+            '''
             if outlinksLength == 0:
                 sys.stdout.write("NodeId:%s\t%i,%s\n" % (nodeId, new_rank, nodeStrings[nodeId][1]))
             else:

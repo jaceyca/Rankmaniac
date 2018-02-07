@@ -40,9 +40,9 @@ def parseData():
             for neighbor in outlinks:
                 # For each line, we need to pass on the information of previous, the current iteration,
                 # and neighbors
-                sys.stdout.write("NodeID:%s\t%i,%f,%s\n" % (nodeId, iteration, curr, outlinksString))
 
                 sys.stdout.write("%s\t%f\n" % (neighbor, curr/lengthOutlinks))
+            sys.stdout.write("NodeID:%s\t%i,%f,%s\n" % (nodeId, iteration, curr, outlinksString))
         # sys.stdout.write("nodeId: %s, iteration: %i, curr: %f, prev: %f, outlinks: %s \n" % (nodeId, iteration, curr, prev, outlinksString))
         
 parseData()
