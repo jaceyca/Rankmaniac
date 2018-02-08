@@ -17,12 +17,12 @@ def parseData():
         data = splitLine[1].strip().split(",")
         # If this is a float
         if '.' in data[0]:
-            iteration = -1
+            iteration = int(1)
             curr = float(data[0])
             outlinks = data[2:]
         # If this is a non-float iteration value
         else:
-            iteration = int(data[0])
+            iteration = int(data[0]) + 1
             curr = float(data[1])
             outlinks = data[2:]
             
@@ -37,10 +37,10 @@ def parseData():
             sys.stdout.write("NodeId:%s\t%i,%f\n" % (nodeId, iteration, curr))
             sys.stdout.write("%s\t%f\n" % (nodeId, curr))
         else:
+            sys.stdout.write("NodeID:%s\t%i,%f,%s\n" % (nodeId, iteration, curr, outlinksString))
             for neighbor in outlinks:
                 # For each line, we need to pass on the information of previous, the current iteration,
                 # and neighbors
-                sys.stdout.write("NodeID:%s\t%i,%f,%s\n" % (nodeId, iteration, curr, outlinksString))
 
                 sys.stdout.write("%s\t%f\n" % (neighbor, curr/lengthOutlinks))
         # sys.stdout.write("nodeId: %s, iteration: %i, curr: %f, prev: %f, outlinks: %s \n" % (nodeId, iteration, curr, prev, outlinksString))
