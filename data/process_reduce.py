@@ -4,7 +4,7 @@ import sys
 import heapq
 import numpy as np
 
-SIZE_OF_QUEUE = 30
+SIZE_OF_QUEUE = 100
 #
 # This program simply represents the identity function.
 #
