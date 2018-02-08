@@ -15,6 +15,7 @@ for line in sys.stdin:
     splitLine = line.split("\t")
     nodeId = splitLine[0].split(":")[1]
     assert(nodeId is not None)
+
     data = splitLine[1].strip().split(",")
     # If this is a float
     if '.' in data[0]:

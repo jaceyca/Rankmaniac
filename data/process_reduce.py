@@ -3,7 +3,7 @@
 import sys
 import heapq
 
-SIZE_OF_QUEUE = 30
+SIZE_OF_QUEUE = 40
 #
 # This program simply represents the identity function.
 #
