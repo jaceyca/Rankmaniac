@@ -42,7 +42,7 @@ for line in sys.stdin:
             else:
                 heapq.heappushpop(priorityQueue, (curRank, nodeId))
         else:
-            sumOfDiffs += abs(curRank - prevRank)
+            sumOfDiffs += abs(curRank - prevRank)**2
             nodeStrings[nodeId] = [nodeId, iteration, curRank] + neighbors
             counter += 1
     else:
@@ -70,7 +70,7 @@ else:
         outlinksString = ",".join(nodeStrings[nodeId][3:])
         outlinksLength = len(outlinksString)
         firstThree = nodeStrings[nodeId][0:3]
-        if avgDiff < 0.001:
+        if avgDiff < 0.000001:
             firstThree[1] = NUM_ITERATIONS - 1
         if outlinksLength == 0:
             sys.stdout.write("NodeId:%i\t%i,%f\n" % (firstThree[0], firstThree[1], firstThree[2]))
