@@ -4,7 +4,7 @@ import sys
 import heapq
 
 SIZE_OF_QUEUE = 20
-NUM_ITERATIONS = 15
+NUM_ITERATIONS = 25
 #
 # This program simply represents the identity function.
 #
@@ -37,8 +37,7 @@ for line in sys.stdin:
                 heapq.heappushpop(priorityQueue, (curRank, nodeId))
         else: 
             outlinksString = ",".join(neighbors)
-            outlinksLength = len(outlinksString)
-            if outlinksLength == 0:
+            if outlinksString == "":
                 sys.stdout.write("NodeId:%i\t%i,%f\n" % (nodeId, iteration, curRank))
             else:
                 sys.stdout.write("NodeId:%i\t%i,%f,%s\n" % (nodeId, iteration, curRank, outlinksString))

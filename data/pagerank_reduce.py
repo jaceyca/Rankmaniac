@@ -38,7 +38,6 @@ for line in sys.stdin:
             prevId = nodeId
         totalRankChange += rankChange
 if prevId != -2:
-    assert (prevId is not None)
     newRank = alpha * totalRankChange + (1-alpha)   
     sys.stdout.write("%s\t%f\n" % (prevId, newRank))
                                    
