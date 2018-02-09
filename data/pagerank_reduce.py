@@ -2,44 +2,34 @@
 
 import sys
 
-#
-# This program simply represents the identity function.
-#
-
-# we want to calculate the new ranks
-
-
-alpha = 0.85
-
-# def parseData():
 prevId = -2
-totalRankChange = 0.0
+totalRanks = {}
 newRank = 0.0
+
+# One line that is (iteration:\t $iter)
+# $N lines that are (NodeId:$node \t $current, $neighbors)
+# $N lines that are ($neighbor \t $donated_rank)
+
 for line in sys.stdin:
-    # If the line starts with N as in NodeID:..., then we know it's passthrough information
-    # and therefore just pass it on
-    if line[0] == 'N':
+    # Pass on the iteration
+    if line[0] == 'i':
+        sys.stdout.write(line)
+    # Pass on NodeId string without NodeId
+    elif line[0] == 'N':
         line = line[7:]
         sys.stdout.write(line)
     else:
-        # Now, if it's data of the form (node, amountOfRankToAddToNode)
+        # Now, if it's data of the form ($node \t $donated_rank)
         splitLine = line.split("\t")
-        #assert(len(splitLine) == 2)
-        nodeId = splitLine[0]
+        nodeId = int(splitLine[0])
         rankChange = float(splitLine[1])
-        # If this is the first line
-        if prevId == -2:
-            prevId = nodeId
-        elif prevId != nodeId:
-            # we have a new ID
-            newRank = alpha * totalRankChange + (1-alpha)   
-            sys.stdout.write("%s\t%f\n" % (prevId, newRank))
-            totalRankChange = 0.0
-            prevId = nodeId
-        totalRankChange += rankChange
-if prevId != -2:
-    assert (prevId is not None)
-    newRank = alpha * totalRankChange + (1-alpha)   
-    sys.stdout.write("%s\t%f\n" % (prevId, newRank))
+
+        if nodeId in totalRanks:
+            totalRanks[nodeId] = totalRanks[nodeId] + rankChange
+        else:
+            totalRanks[nodeId] = rankChange
+
+for nodeId in totalRanks:
+    new_rank = 0.85 * totalRanks[nodeId] + 0.15
+    sys.stdout.write("%i\t%f\n" % (nodeId, new_rank))
                                    
-# parseData()
