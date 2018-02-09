@@ -25,7 +25,6 @@ for line in sys.stdin:
         iteration = int(splitLine[1])
         # this is banking on the fact that iteration is the first line...
         if iteration >= NUM_ITERATIONS:
-            sys.stdout.write("converged \n")
             isConverged = True
         else:
             sys.stdout.write("iteration:\t%i\n" % (iteration + 1))
@@ -63,10 +62,10 @@ if isConverged:
     # we need to reverse the heap
     while finalRanks:
         new_rank, nodeId = heapq.heappop(finalRanks)
-        sys.stdout.write("newrank %s, nodeid %s \n" % (new_rank, nodeId))
+        # sys.stdout.write("newrank %s, nodeid %s \n" % (new_rank, nodeId))
         topKRanks.append((new_rank, nodeId))
         currentRanking -= 1
-    sys.stdout.write("size: %i \n" % len(topKRanks))
+    # sys.stdout.write("size: %i \n" % len(topKRanks))
 
     for i in range(SIZE_OF_QUEUE - 1, SIZE_OF_QUEUE - 21, -1):
         sys.stdout.write("FinalRank:%s\t%s\n" % (topKRanks[i][0], topKRanks[i][1]))
