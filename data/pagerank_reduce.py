@@ -13,8 +13,8 @@ alpha = 0.85
 
 # def parseData():
 prevId = -2
-totalRankChange = 0.0
-newRank = 0.0
+
+nodes = {}
 for line in sys.stdin:
     # If the line starts with N as in NodeID:..., then we know it's passthrough information
     # and therefore just pass it on
@@ -28,17 +28,16 @@ for line in sys.stdin:
         nodeId = splitLine[0]
         rankChange = float(splitLine[1])
         # If this is the first line
-        if prevId == -2:
-            prevId = nodeId
-        elif prevId != nodeId:
+        if prevId != nodeId:
             # we have a new ID
-            newRank = alpha * totalRankChange + (1-alpha)   
-            sys.stdout.write("%s\t%f\n" % (prevId, newRank))
-            totalRankChange = 0.0
+            nodes[nodeId] = rankChange 
+            #sys.stdout.write("%s\t%f\n" % (prevId, newRank))
+            #totalRankChange = 0.0
             prevId = nodeId
-        totalRankChange += rankChange
-if prevId != -2:
-    newRank = alpha * totalRankChange + (1-alpha)   
-    sys.stdout.write("%s\t%f\n" % (prevId, newRank))
+        else:
+            nodes[nodeId] += rankChange 
+       # totalRankChange += rankChange
                                    
+for nodeId in nodes:
+    sys.stdout.write("%s\t%f\n" % (nodeId, alpha * nodes[nodeId] + (1-alpha) ))
 # parseData()
