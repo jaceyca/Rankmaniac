@@ -2,7 +2,6 @@
 
 import sys
 
-prevId = -2
 totalRanks = {}
 newRank = 0.0
 
@@ -20,7 +19,7 @@ for line in sys.stdin:
     else:
         # Now, if it's data of the form ($node \t $donated_rank)
         splitLine = line.split("\t")
-        nodeId = int(splitLine[0])
+        nodeId = splitLine[0]
         rankChange = float(splitLine[1])
 
         if nodeId in totalRanks:
@@ -30,7 +29,7 @@ for line in sys.stdin:
 
 for nodeId in totalRanks:
     new_rank = 0.85 * totalRanks[nodeId] + 0.15
-    sys.stdout.write("%i\t%f\n" % (nodeId, new_rank))
+    sys.stdout.write("%s\t%f\n" % (nodeId, new_rank))
                                    
 # One line that is (# \t $iter)
 # $N lines that are (:$node \t $current, $neighbors)

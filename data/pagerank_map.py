@@ -13,10 +13,10 @@ for line in sys.stdin:
         sys.stdout.write(line)
     else:
         splitLine = line.split("\t")
-        nodeId = int(splitLine[0].split(":")[1])
+        nodeId = splitLine[0].split(":")[1]
         data = splitLine[1].strip().split(",")
 
-        curr = float(data[0])
+        curr = data[0]
         # If this string has the previous rank
         if '.' in data[1]:
             outlinks = data[2:]
@@ -28,14 +28,14 @@ for line in sys.stdin:
         lengthOutlinks = len(outlinks)
         # If there are no outlinks 
         if lengthOutlinks == 0:
-            sys.stdout.write("%i\t%f\n" % (nodeId, curr))
-            sys.stdout.write(":%i\t%f\n" % (nodeId, curr))
+            sys.stdout.write("%s\t%s\n" % (nodeId, curr))
+            sys.stdout.write(":%s\t%s\n" % (nodeId, curr))
         else:
             for neighbor in outlinks:
                 # For each neighbor, we need to pass on donated rank
-                donated_rank = float(curr/lengthOutlinks)
+                donated_rank = float(float(curr)/lengthOutlinks)
                 sys.stdout.write("%s\t%f\n" % (neighbor, donated_rank))
-            sys.stdout.write(":%i\t%f,%s\n" % (nodeId, curr, outlinksString))
+            sys.stdout.write(":%s\t%s,%s\n" % (nodeId, curr, outlinksString))
 
 # Expect output:
 # First iteration:

@@ -4,13 +4,13 @@ import sys
 import heapq
 
 SIZE_OF_QUEUE = 20
-NUM_ITERATIONS = 15
+NUM_ITERATIONS = 17
 
 # One line that is (# \t $iter)
 # $N lines that are (:$node \t $current, $neighbors)
 # $N lines that are ($node \t $new_rank)
 
-prevNode = -1
+prevNode = None
 nodeStrings = {}
 isConverged = False
 iteration = 0
@@ -30,7 +30,7 @@ for line in sys.stdin:
             sys.stdout.write("#\t%i\n" % (iteration + 1))
 
     else:
-        nodeId = int(splitLine[0])
+        nodeId = splitLine[0]
         # This is ($node \t $new_rank)
         if len(data) == 1:
             new_rank = float(data[0])
@@ -46,7 +46,7 @@ for line in sys.stdin:
                     heapq.heappush(finalRanks, (new_rank, nodeId))
                 else:
                     heapq.heappushpop(finalRanks, (new_rank, nodeId))
-            nodeStrings[nodeId] = [str(nodeId), str(new_rank)] + neighbors
+            nodeStrings[nodeId] = [nodeId, str(new_rank)] + neighbors
         else:
             prevNode = nodeId
 
@@ -71,9 +71,8 @@ if isConverged:
 else: 
     for nodeId in nodeStrings:
         outlinksString = ",".join(nodeStrings[nodeId][2:])
-        outlinksLength = len(outlinksString)
         firstTwo = nodeStrings[nodeId][0:2]
-        if outlinksLength == 0:
+        if len(outlinksString) == 0:
             sys.stdout.write(":%s\t%s\n" % (firstTwo[0], firstTwo[1]))
         else:
             sys.stdout.write(":%s\t%s,%s\n" % (firstTwo[0], firstTwo[1], outlinksString))
