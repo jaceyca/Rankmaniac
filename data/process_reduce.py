@@ -5,11 +5,6 @@ import heapq
 
 SIZE_OF_QUEUE = 20
 NUM_ITERATIONS = 17
-
-# One line that is (# \t $iter)
-# $N lines that are (:$node \t $current, $neighbors)
-# $N lines that are ($node \t $new_rank)
-
 prevNode = None
 nodeStrings = {}
 isConverged = False
@@ -19,28 +14,19 @@ finalRanks = []
 for line in sys.stdin:
     splitLine = line.split("\t")
     data = splitLine[1].strip().split(",")
-
-    # This is (# \t $iter)
     if splitLine[0][0] == "#":
         iteration = int(splitLine[1])
-        # this is banking on the fact that iteration is the first line...
         if iteration >= NUM_ITERATIONS:
             isConverged = True
         else:
             sys.stdout.write("#\t%i\n" % (iteration + 1))
-
     else:
         nodeId = splitLine[0]
-        # This is ($node \t $new_rank)
         if len(data) == 1:
             new_rank = float(data[0])
-        # This is (:$node \t $current, $neighbors)
         else:
             neighbors = data[1:]
-
-        # If we have seen this node
         if nodeId == prevNode:
-            # If we are done, create our final ranks
             if isConverged:
                 if len(finalRanks) < SIZE_OF_QUEUE:
                     heapq.heappush(finalRanks, (new_rank, nodeId))
@@ -49,17 +35,11 @@ for line in sys.stdin:
             nodeStrings[nodeId] = [nodeId, str(new_rank)] + neighbors
         else:
             prevNode = nodeId
-
-# if this is the first iteration, emit a new iteration string
 if iteration == 0:
     sys.stdout.write("#\t2\n")
-
-# we are done!
 if isConverged:
     currentRanking = SIZE_OF_QUEUE
     topKRanks = []
-
-    # we need to reverse the heap
     while finalRanks:
         new_rank, nodeId = heapq.heappop(finalRanks)
         topKRanks.append((new_rank, nodeId))
@@ -67,7 +47,6 @@ if isConverged:
 
     for i in range(SIZE_OF_QUEUE - 1, SIZE_OF_QUEUE - 21, -1):
         sys.stdout.write("FinalRank:%s\t%s\n" % (topKRanks[i][0], topKRanks[i][1]))
-# we are not done :(
 else: 
     for nodeId in nodeStrings:
         outlinksString = ",".join(nodeStrings[nodeId][2:])
@@ -76,7 +55,3 @@ else:
             sys.stdout.write(":%s\t%s\n" % (firstTwo[0], firstTwo[1]))
         else:
             sys.stdout.write(":%s\t%s,%s\n" % (firstTwo[0], firstTwo[1], outlinksString))
-
-# Expected output:
-# One line that is (# \t $iter)
-# $N lines that are (:$node \t $current, $neighbors)
