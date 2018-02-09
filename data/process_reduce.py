@@ -12,8 +12,12 @@ NUM_ITERATIONS = 15
 # New Rank line: (nodeId \t newRank)
 # Paassthrough line: (nodeId \t iteration, current, neighbors)
 
+counter = 0
+sumOfDiffs = 0
 prevNode = None
 nodeStrings = {}
+iteration = 0
+avgDiff = 0
 
 priorityQueue = []
 for line in sys.stdin:
@@ -28,6 +32,7 @@ for line in sys.stdin:
     else:
         # From data = [iteration, current, neighbors]
         iteration = int(data[0])
+        prevRank = float(data[1])
         neighbors = data[2:]
 
     if nodeId == prevNode:
@@ -36,7 +41,10 @@ for line in sys.stdin:
                 heapq.heappush(priorityQueue, (curRank, nodeId))
             else:
                 heapq.heappushpop(priorityQueue, (curRank, nodeId))
-        nodeStrings[nodeId] = [nodeId, iteration, curRank] + neighbors
+        else:
+            sumOfDiffs += abs(curRank - prevRank)
+            nodeStrings[nodeId] = [nodeId, iteration, curRank] + neighbors
+            counter += 1
     else:
         prevNode = nodeId
 
@@ -54,11 +62,16 @@ if iteration == NUM_ITERATIONS:
     for i in range(SIZE_OF_QUEUE - 1, SIZE_OF_QUEUE - 21, -1):
         sys.stdout.write("FinalRank:%f\t%s\n" % (topKRanks[i][0], topKRanks[i][1]))
 
-else: 
+else:
+    if counter:
+        avgDiff = sumOfDiffs / counter
+
     for nodeId in nodeStrings:
         outlinksString = ",".join(nodeStrings[nodeId][3:])
         outlinksLength = len(outlinksString)
         firstThree = nodeStrings[nodeId][0:3]
+        if avgDiff < 0.001:
+            firstThree[1] = NUM_ITERATIONS - 1
         if outlinksLength == 0:
             sys.stdout.write("NodeId:%i\t%i,%f\n" % (firstThree[0], firstThree[1], firstThree[2]))
         else:
