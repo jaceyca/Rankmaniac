@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-
+from collections import defaultdict
 #
 # This program simply represents the identity function.
 #
@@ -13,8 +13,8 @@ alpha = 0.85
 
 # def parseData():
 prevId = -2
-totalRankChange = 0.0
-newRank = 0.0
+
+nodes = defaultdict(int)
 for line in sys.stdin:
     # If the line starts with N as in NodeID:..., then we know it's passthrough information
     # and therefore just pass it on
@@ -27,19 +27,9 @@ for line in sys.stdin:
         #assert(len(splitLine) == 2)
         nodeId = splitLine[0]
         rankChange = float(splitLine[1])
-        # If this is the first line
-        if prevId == -2:
-            prevId = nodeId
-        elif prevId != nodeId:
-            # we have a new ID
-            newRank = alpha * totalRankChange + (1-alpha)   
-            sys.stdout.write("%s\t%f\n" % (prevId, newRank))
-            totalRankChange = 0.0
-            prevId = nodeId
-        totalRankChange += rankChange
-if prevId != -2:
-    assert (prevId is not None)
-    newRank = alpha * totalRankChange + (1-alpha)   
-    sys.stdout.write("%s\t%f\n" % (prevId, newRank))
+        nodes[nodeId] += rankChange 
+       # totalRankChange += rankChange
                                    
+for nodeId in nodes:
+    sys.stdout.write("%s\t%f\n" % (nodeId, alpha * nodes[nodeId] + (1-alpha) ))
 # parseData()

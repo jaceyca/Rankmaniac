@@ -4,7 +4,7 @@ import sys
 import heapq
 
 SIZE_OF_QUEUE = 20
-NUM_ITERATIONS = 30
+NUM_ITERATIONS = 15
 #
 # This program simply represents the identity function.
 #

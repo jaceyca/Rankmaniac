@@ -2,7 +2,7 @@
 i=0
 n_iterations=50
 input=input.txt
-python_ver=python # Change this to however you invoke python
+python_ver=python2 # Change this to however you invoke python
 
 while [ $i -lt $n_iterations ]
 do

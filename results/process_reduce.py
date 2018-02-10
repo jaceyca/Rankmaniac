@@ -4,7 +4,7 @@ import sys
 import heapq
 
 SIZE_OF_QUEUE = 20
-NUM_ITERATIONS = 15
+NUM_ITERATIONS = 2
 #
 # This program simply represents the identity function.
 #
@@ -13,13 +13,12 @@ NUM_ITERATIONS = 15
 # Paassthrough line: (nodeId \t iteration, current, neighbors)
 
 prevNode = None
-nodeStrings = {}
+iteration = 0
 
 priorityQueue = []
 for line in sys.stdin:
     splitLine = line.split("\t")
     nodeId = int(splitLine[0])
-    assert(nodeId is not None)
     data = splitLine[1].strip().split(",")
 
     # Checking if this is [NodeID, new rank] line
@@ -36,7 +35,13 @@ for line in sys.stdin:
                 heapq.heappush(priorityQueue, (curRank, nodeId))
             else:
                 heapq.heappushpop(priorityQueue, (curRank, nodeId))
-        nodeStrings[nodeId] = [nodeId, iteration, curRank] + neighbors
+        else: 
+            outlinksString = ",".join(neighbors)
+            if outlinksString == "":
+                sys.stdout.write("NodeId:%i\t%i,%f\n" % (nodeId, iteration, curRank))
+            else:
+                sys.stdout.write("NodeId:%i\t%i,%f,%s\n" % (nodeId, iteration, curRank, outlinksString))
+
     else:
         prevNode = nodeId
 
@@ -53,14 +58,3 @@ if iteration == NUM_ITERATIONS:
 
     for i in range(SIZE_OF_QUEUE - 1, SIZE_OF_QUEUE - 21, -1):
         sys.stdout.write("FinalRank:%f\t%s\n" % (topKRanks[i][0], topKRanks[i][1]))
-
-else: 
-    for nodeId in nodeStrings:
-        outlinksString = ",".join(nodeStrings[nodeId][3:])
-        outlinksLength = len(outlinksString)
-        firstThree = nodeStrings[nodeId][0:3]
-        if outlinksLength == 0:
-            sys.stdout.write("NodeId:%i\t%i,%f\n" % (firstThree[0], firstThree[1], firstThree[2]))
-        else:
-            sys.stdout.write("NodeId:%i\t%i,%f,%s\n" % (firstThree[0], firstThree[1], firstThree[2], outlinksString))
-
