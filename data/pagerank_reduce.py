@@ -21,7 +21,7 @@ for line in sys.stdin:
     if line[0] == 'N':
         line = line[7:]
         sys.stdout.write(line)
-    if line[0] == '#':
+    elif line[0] == '#':
         splitLine = line.split("\t")
         #assert(len(splitLine) == 2)
         nodeId = splitLine[0][1:]
