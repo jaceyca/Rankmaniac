@@ -7,7 +7,8 @@ import sys
 #
 
 # we want to parse the data into usable components
-
+nodeRanks = dict()
+nodesWithIn = set()
 # def parseData():
 # First line input: (nodeId \t current, previous, neighbors)
 # Every other line: (nodeId \t iteration, current, previous, neighbors)
@@ -28,7 +29,7 @@ for line in sys.stdin:
         outlinks = data[2:]
         
     outlinksString = ",".join(outlinks)
-
+    nodeRanks[nodeId] = curr
 
     # Other output is simply (node, amountOfRankToAddToNode)
 
@@ -39,9 +40,13 @@ for line in sys.stdin:
         sys.stdout.write("NodeId:%s\t%i,%f\n" % (nodeId, iteration, curr))
     else:
         for neighbor in outlinks:
+            nodesWithIn.add(neighbor)
             # For each line, we need to pass on the information of previous, the current iteration,
             # and neighbors
             sys.stdout.write("%s\t%f\n" % (neighbor, curr/lengthOutlinks))
         sys.stdout.write("NodeID:%s\t%i,%f,%s\n" % (nodeId, iteration, curr, outlinksString))
-    
+
+for nodeId in nodeRanks:
+    if nodeId not in nodesWithIn:
+        sys.stdout.write("#%s\t%f\n" % (nodeId, nodeRanks[nodeId]))
 # parseData()
