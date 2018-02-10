@@ -4,7 +4,7 @@ import sys
 import heapq
 
 SIZE_OF_QUEUE = 20
-NUM_ITERATIONS = 17
+NUM_ITERATIONS = 12
 prevNode = None
 nodeStrings = {}
 isConverged = False

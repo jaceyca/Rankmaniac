@@ -10,6 +10,10 @@ for line in sys.stdin:
         sys.stdout.write(line)
     elif line[0] == ':':
         sys.stdout.write(line[1:])
+    elif line[0] == '!':
+        splitLine = line.split("\t")
+        nodeId = splitLine[0][1:]
+        sys.stdout.write("%s\t%f\n" % (nodeId, 0.15))
     else:
         splitLine = line.split("\t")
         nodeId = splitLine[0]
