@@ -48,5 +48,5 @@ for line in sys.stdin:
 
 for nodeId in nodesSeen:
     if nodeId not in nodesWithIn:
-        sys.stdout.write("#%s\n" % (nodeId))
+        sys.stdout.write("%s\t%f\n" % (nodeId, 0.15))
 # parseData()

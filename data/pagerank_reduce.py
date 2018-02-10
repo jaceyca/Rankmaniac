@@ -19,12 +19,13 @@ for line in sys.stdin:
     # If the line starts with N as in NodeID:..., then we know it's passthrough information
     # and therefore just pass it on
     if line[0] == 'N':
-        line = line[7:]
-        sys.stdout.write(line)
+        line1 = line[7:]
+        sys.stdout.write(line1)
     elif line[0] == '#':
         #assert(len(splitLine) == 2)
-        nodeId = line[1:]
-        sys.stdout.write("%s\t%f\n" % (nodeId, (1-alpha)))
+        splitLine = line.split("\t")
+        nodeId = splitLine[0][1:]
+        sys.stdout.write("%s\t%f\n" % (nodeId, 0.15))
     else:
         # Now, if it's data of the form (node, amountOfRankToAddToNode)
         splitLine = line.split("\t")
@@ -35,5 +36,6 @@ for line in sys.stdin:
        # totalRankChange += rankChange
                                    
 for nodeId in nodes:
+    #assert(nodeId != '')
     sys.stdout.write("%s\t%f\n" % (nodeId, alpha * nodes[nodeId] + (1-alpha) ))
 # parseData()
