@@ -48,5 +48,5 @@ for line in sys.stdin:
 
 for nodeId in nodeRanks:
 	if nodeId not in nodesWithIn:
-		sys.stdout.write("%s\t%f\n" % (nodeId, nodeRanks[nodeId]))
+		sys.stdout.write("#%s\t%f\n" % (nodeId, nodeRanks[nodeId]))
 # parseData()
