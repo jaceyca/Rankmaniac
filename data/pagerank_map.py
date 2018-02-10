@@ -10,8 +10,8 @@ import sys
 nodesSeen = set()
 nodesWithIn = set()
 # def parseData():
-# First line input: (nodeId \t current, previous, neighbors)
-# Every other line: (nodeId \t iteration, current, previous, neighbors)
+# First iteration input: (nodeId \t current, previous, neighbors)
+# Every other iteration: (nodeId \t iteration, current, previous, neighbors)
 for line in sys.stdin:
     splitLine = line.split("\t")
     nodeId = splitLine[0].split(":")[1]
