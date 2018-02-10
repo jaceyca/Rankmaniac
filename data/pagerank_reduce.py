@@ -24,7 +24,7 @@ for line in sys.stdin:
     if line[0] == '#':
         splitLine = line.split("\t")
         #assert(len(splitLine) == 2)
-        nodeId = splitLine[0]
+        nodeId = splitLine[0][1:]
         sys.stdout.write("%s\t%f\n" % (nodeId, (1-alpha)))
     else:
         # Now, if it's data of the form (node, amountOfRankToAddToNode)
